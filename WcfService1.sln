@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1CCE9B07-D1AE-45A3-BB9A-94728AD9DBC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService1", "src\WcfService1\WcfService1.csproj", "{0DE58536-DC1A-4B7E-966B-1656F57C4211}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DE58536-DC1A-4B7E-966B-1656F57C4211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DE58536-DC1A-4B7E-966B-1656F57C4211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DE58536-DC1A-4B7E-966B-1656F57C4211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DE58536-DC1A-4B7E-966B-1656F57C4211}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0DE58536-DC1A-4B7E-966B-1656F57C4211} = {1CCE9B07-D1AE-45A3-BB9A-94728AD9DBC8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1CC38592-3DE3-40C8-B7EC-5A916E701BD7}
+	EndGlobalSection
+EndGlobal
