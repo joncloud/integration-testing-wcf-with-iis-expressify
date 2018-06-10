@@ -16,7 +16,7 @@ namespace XUnitTestProject1
             _source = source;
             _backup = Path.GetFileName(source) + ".bak";
             if (File.Exists(_backup)) File.Delete(_backup);
-            File.Replace(source, target, _backup);
+            File.Replace(target, source, _backup);
         }
 
         #region IDisposable Support

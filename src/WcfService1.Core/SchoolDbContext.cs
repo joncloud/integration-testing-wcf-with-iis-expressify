@@ -25,6 +25,14 @@ namespace WcfService1
                 .Property(x => x.Name).HasMaxLength(64);
         }
 
+        public static TResult Use<TResult>(string nameOrConnectionString, Func<SchoolDbContext, TResult> fn)
+        {
+            using (var context = new SchoolDbContext(nameOrConnectionString))
+            {
+                return fn(context);
+            }
+        }
+
         public static TResult Use<TResult>(Func<SchoolDbContext, TResult> fn)
         {
             using (var context = new SchoolDbContext())
