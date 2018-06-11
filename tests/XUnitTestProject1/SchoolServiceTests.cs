@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,55 +10,47 @@ using Xunit;
 
 namespace XUnitTestProject1
 {
-    // TODO build fixture for 
-    // # once per session
-    // Create initial database
-    // Detach
-    // # once per method
-    // Copy
-    // Attach
-    // # dispose per method
-    // Detach
-    // Delete
-    // # dispose per session
-    // Delete
-
     [Collection("IIS")]
     public class SchoolServiceTests
     {
         readonly IisFixture _iisFixture;
-        public SchoolServiceTests(IisFixture iisFixture) => _iisFixture = iisFixture;
+        readonly DbContextFixture<SchoolDbContext> _dbFixture;
+        public SchoolServiceTests(IisFixture iisFixture, DbContextFixture<SchoolDbContext> dbFixture)
+        {
+            _iisFixture = iisFixture;
+            _dbFixture = dbFixture;
+        }
 
         [Fact]
         public void GetName_ShouldReturnNullGivenMissingStudent()
         {
-            SchoolDbContext.Use(Test.ConnectionString, ctx => ctx.Database.CreateIfNotExists());
+            _dbFixture.Use((id, ctx) =>
+            {
+                var name = _iisFixture.WcfClient<ISchoolService>("SchoolService.svc")
+                    .BasicHttpClient()
+                    .Use(svc => svc.GetStudentName(id, Guid.NewGuid()));
 
-            var name = _iisFixture.WcfClient<ISchoolService>("SchoolService.svc")
-                .BasicHttpClient()
-                .Use(svc => svc.GetStudentName(Guid.NewGuid()));
-
-            Assert.Null(name);
+                Assert.Null(name);
+            });
         }
 
         [Fact]
         public void GetName_ShouldReturnValueGivenFoundStudent()
         {
-            var id = Guid.NewGuid();
+            var studentId = Guid.NewGuid();
             var expected = "abc";
-            SchoolDbContext.Use(Test.ConnectionString, ctx =>
+
+            _dbFixture.Use((id, ctx) =>
             {
-                ctx.Database.CreateIfNotExists();
-                
-                ctx.Students.Add(new Student { Id = id, Name = expected });
-                return ctx.SaveChanges();
+                ctx.Students.Add(new Student { Id = studentId, Name = expected });
+                ctx.SaveChanges();
+
+                var actual = _iisFixture.WcfClient<ISchoolService>("SchoolService.svc")
+                    .BasicHttpClient()
+                    .Use(svc => svc.GetStudentName(id, studentId));
+
+                Assert.Equal(expected, actual);
             });
-
-            var actual = _iisFixture.WcfClient<ISchoolService>("SchoolService.svc")
-                .BasicHttpClient()
-                .Use(svc => svc.GetStudentName(id));
-
-            Assert.Equal(expected, actual);
         }
     }
 }

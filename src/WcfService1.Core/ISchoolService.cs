@@ -12,6 +12,6 @@ namespace WcfService1
     public interface ISchoolService
     {
         [OperationContract]
-        string GetStudentName(Guid studentId);
+        string GetStudentName(Guid databaseId, Guid studentId);
     }
 }

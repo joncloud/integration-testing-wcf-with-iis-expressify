@@ -15,14 +15,9 @@ namespace XUnitTestProject1
             ).FullName;
         
         readonly IisExpress _iisExpress;
-        readonly FileSwap _fileSwap;
         public IisFixture()
         {
             var hostingDirectory = GetHostingDirectory();
-
-            _fileSwap = new WebConfig(Path.Combine(hostingDirectory, "Web.config"))
-                .ReplaceConnectionString("SchoolDbContext", Test.ConnectionString)
-                .Swap();
 
             _iisExpress = IisExpress.Https()
                 .PhysicalPath(hostingDirectory)
@@ -34,8 +29,6 @@ namespace XUnitTestProject1
         public void Dispose()
         {
             _iisExpress.Dispose();
-
-            _fileSwap.Dispose();
         }
 
         internal WcfClientBuilder<T> WcfClient<T>(string path) => _iisExpress.WcfClient<T>(path);

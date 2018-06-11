@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Configuration;
 using System.Data.Entity;
+using System.Data.SqlClient;
 
 namespace WcfService1
 {
@@ -25,10 +27,19 @@ namespace WcfService1
                 .Property(x => x.Name).HasMaxLength(64);
         }
 
+        public static TResult Use<TResult>(Guid databaseId, Func<SchoolDbContext, TResult> fn)
+        {
+            var connectionString = ConfigurationManager.ConnectionStrings[nameof(SchoolDbContext)].ConnectionString;
+            var builder = new SqlConnectionStringBuilder(connectionString);
+            builder.InitialCatalog = string.Format(builder.InitialCatalog, databaseId);
+            return Use(builder.ConnectionString, fn);
+        }
+
         public static TResult Use<TResult>(string nameOrConnectionString, Func<SchoolDbContext, TResult> fn)
         {
             using (var context = new SchoolDbContext(nameOrConnectionString))
             {
+                context.Database.CommandTimeout = 5;
                 return fn(context);
             }
         }

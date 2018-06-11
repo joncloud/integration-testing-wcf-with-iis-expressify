@@ -11,7 +11,7 @@ namespace WcfService1
     // NOTE: In order to launch WCF Test Client for testing this service, please select SchoolService.svc or SchoolService.svc.cs at the Solution Explorer and start debugging.
     public class SchoolService : ISchoolService
     {
-        public string GetStudentName(Guid studentId) =>
-            SchoolDbContext.Use(ctx => ctx.Students.Find(studentId)?.Name);
+        public string GetStudentName(Guid databaseId, Guid studentId) =>
+            SchoolDbContext.Use(databaseId, ctx => ctx.Students.Find(studentId)?.Name);
     }
 }
