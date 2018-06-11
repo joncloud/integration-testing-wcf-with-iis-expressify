@@ -30,7 +30,10 @@ namespace XUnitTestProject1
             {
                 using (var command = _connection.CreateCommand())
                 {
-                    command.CommandText = $"ALTER DATABASE [{databaseName}] SET OFFLINE WITH ROLLBACK IMMEDIATE;";
+                    command.CommandText = $@"
+                        ALTER DATABASE [{databaseName}] SET OFFLINE WITH ROLLBACK IMMEDIATE;
+                        ALTER DATABASE [{databaseName}] SET ONLINE;
+                    ";
                     command.ExecuteNonQuery();
                 }
             }
